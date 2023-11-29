@@ -1,3 +1,11 @@
+## このリポジトリの目的
+
+TechTrain の「React.js 基礎 3 書籍レビューアプリ」を実施する目的で作成しました。
+
+2023/11/30- 作業開始
+
+以下、テンプレ
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
