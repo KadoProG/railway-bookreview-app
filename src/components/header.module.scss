@@ -1,0 +1,23 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  background: var(--color-theme);
+  padding: 0 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 48px;
+  &__title {
+    color: var(--color-title);
+  }
+  & button {
+    background: none;
+    border: none;
+    color: var(--color-title);
+    cursor: pointer;
+    &:hover {
+      background: var(--color-gray);
+    }
+  }
+}

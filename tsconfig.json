@@ -19,6 +19,7 @@
   "include": [
     "src",
     "__tests__/SignIn.test.tsx",
-    "__tests__/ExampleComponent.test.tsx"
+    "__tests__/ExampleComponent.test.tsx",
+    "__tests__/Wait.test.tsx"
   ]
 }

@@ -1,3 +1,4 @@
+import styles from './signin.module.scss'
 import axios from 'axios'
 import { ChangeEvent, FormEvent, useState } from 'react'
 import { useCookies } from 'react-cookie'
@@ -48,49 +49,39 @@ export const SignIn = () => {
   if (auth) return <Navigate to="/" state={{ permanent: false }} />
 
   return (
-    <div>
+    <>
       <Header />
-      <main className="signin">
+      <main className={styles.main}>
         <h2>サインイン</h2>
-        <p className="error-message" id="error_message">
+        <p className={styles.error_message} id="error_message">
           {errorMessage}
         </p>
         <form
-          className="signin-form"
+          className={styles.form}
           onSubmit={onSignIn}
           id="form"
           data-testid="signin-form"
         >
-          <label className="email-label" htmlFor="email">
-            メールアドレス
-          </label>
-          <br />
+          <label htmlFor="email">メールアドレス</label>
           <input
             type="text"
-            className="email-input"
             value={email}
             id="email"
             onChange={handleEmailChange}
           />
-          <br />
-          <label className="password-label" htmlFor="password">
-            パスワード
-          </label>
-          <br />
+          <label htmlFor="password">パスワード</label>
           <input
             type="password"
-            className="password-input"
             value={password}
             id="password"
             onChange={handlePasswordChange}
           />
-          <br />
-          <button type="submit" className="signin-button">
-            サインイン
-          </button>
+          <button type="submit">サインイン</button>
+          <p>
+            アカウントがありませんか？<Link to="/signup">新規作成はこちら</Link>
+          </p>
         </form>
-        <Link to="/signup">新規作成</Link>
       </main>
-    </div>
+    </>
   )
 }

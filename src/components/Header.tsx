@@ -1,3 +1,5 @@
+import styles from './header.module.scss'
+
 import { useCookies } from 'react-cookie'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
@@ -17,9 +19,9 @@ export const Header = () => {
   }
 
   return (
-    <header className="header">
-      <Link to="/" className="header__title">
-        <h1>Todoアプリ</h1>
+    <header className={styles.header}>
+      <Link to="/" className={styles.header__title}>
+        <h1>書籍レビューアプリ</h1>
       </Link>
       {auth ? (
         <button

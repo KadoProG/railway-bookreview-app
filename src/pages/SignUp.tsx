@@ -1,23 +1,34 @@
+import styles from './signin.module.scss'
+
 import axios from 'axios'
-import { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, MouseEvent, useRef, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useSelector, useDispatch } from 'react-redux'
-import { Navigate, useNavigate } from 'react-router-dom'
-import { signIn } from '../authSlice'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { RootState, signIn } from '../authSlice'
 import { Header } from '../components/Header'
 import { url } from '../const'
-// import './signUp.scss'
+import Compressor from 'compressorjs'
+import Wait from '../components/Wait'
+
+const postImage = async (token: string, file: Blob) => {}
 
 export const SignUp = () => {
-  const auth = useSelector((state: any) => state.auth.isSignIn)
+  const fileRef = useRef<HTMLInputElement>(null)
+  const auth = useSelector((state: RootState) => state.auth.isSignIn)
   const dispatch = useDispatch()
   const navigation = useNavigate()
+
+  // APIリクエストの状態 0:アカウント登録 1:画像転送
+  const [postState, setPostState] = useState<number>(-1)
 
   // テキストボックスのステートメント
   const [email, setEmail] = useState<string>('') // メールアドレス
   const [name, setName] = useState<string>('') // ユーザ名
   const [password, setPassword] = useState<string>('') // パスワード
   const [errorMessage, setErrorMessge] = useState<string>('') // エラーメッセージ
+
+  const [file, setFile] = useState<Blob>()
 
   // eslint-disable-next-line
   const [cookies, setCookie] = useCookies()
@@ -33,62 +44,145 @@ export const SignUp = () => {
     setName(e.target.value)
   }
 
-  // Submit時の処理
-  const onSignUp = (e: FormEvent<HTMLFormElement>) => {
+  // 画像リセットの処理
+  const handleImageReset = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
+    setFile(undefined)
+    if (fileRef.current) fileRef.current.value = ''
+  }
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (files === null) return
+    const data = files[0]
+    if (data === undefined) return
+
+    const sizeQuality = data.size > 1000000 ? 1000000 / data.size : 1
+
+    new Compressor(data, {
+      quality: sizeQuality,
+      success(result) {
+        // 圧縮完了
+        if (result.size > 1000000) {
+          setErrorMessge('画像が大きすぎます')
+          return
+        }
+        setFile(result)
+      },
+      error(error) {
+        setErrorMessge('画像アップロードに失敗しました')
+      },
+    })
+  }
+
+  // Submit時の処理
+  const onSignUp = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    if (!email || !name || !password) {
+      return setErrorMessge('フォームに空白の項目があります')
+    }
+    if (!file) {
+      return setErrorMessge('画像が設定されていません')
+    }
 
     const data = { email, name, password }
 
-    axios
+    setPostState(0)
+
+    await axios
       .post(`${url}/users`, data)
-      .then((res) => {
+      .then(async (res) => {
         const token = res.data.token
         dispatch(signIn())
         setCookie('token', token)
-        navigation('/')
+        setPostState(1)
+
+        await postImage(token, file)
+
+        navigation('/') // これが動的なリダイレクト的なやつ
       })
       .catch((err) => {
-        setErrorMessge(`サインアップに失敗しました。 ${err}`)
+        setPostState(-1)
+        return setErrorMessge(
+          `サインアップに失敗しました。 ${err.response.data.ErrorMessageJP}`
+        )
       })
-    // ログインされていたらHOMEに戻る
-    if (auth) return <Navigate to="/" state={{ permanent: false }} />
+      .catch((err) => {
+        return setErrorMessge(`エラー： ${err}`)
+      })
   }
+
+  // すでにログインされている場合はリダイレクト的なことする
+  if (auth) return <Navigate to="/" state={{ permanent: false }} />
+
   return (
-    <div>
+    <>
+      <Wait
+        nowIndex={postState}
+        title="リクエストを送信しています"
+        stateList={['ユーザ登録', '画像の送信']}
+      />
       <Header />
-      <main className="signup">
+      <main className={styles.main}>
         <h2>新規作成</h2>
-        <p className="error-message">{errorMessage}</p>
-        <form className="signup-form" onSubmit={onSignUp}>
-          <label>メールアドレス</label>
-          <br />
+        <p className={styles.error_message}>{errorMessage}</p>
+        <form className={styles.form} onSubmit={onSignUp}>
+          <label htmlFor="email">メールアドレス</label>
           <input
+            required
+            autoFocus={true}
             type="email"
+            id="email"
             onChange={handleEmailChange}
-            className="email-input"
           />
-          <br />
-          <label>ユーザ名</label>
-          <br />
+
+          <label htmlFor="name">ユーザ名</label>
+          <input required type="text" onChange={handleNameChange} id="name" />
+
+          <label htmlFor="password">パスワード</label>
           <input
-            type="text"
-            onChange={handleNameChange}
-            className="name-input"
-          />
-          <br />
-          <label>パスワード</label>
-          <br />
-          <input
+            required
             type="password"
             onChange={handlePasswordChange}
-            className="password-input"
+            id="password"
           />
-          <br />
+
+          <label htmlFor="file">アイコン画像</label>
+          <div className={styles.form__image}>
+            <input
+              ref={fileRef}
+              type="file"
+              accept=".png, .jpg"
+              onChange={handleImageChange}
+              id="file"
+            />
+            {file ? (
+              <div className={styles.form__image__container}>
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt="アイコン用画像"
+                  width={100}
+                  height={100}
+                />
+                <button onClick={handleImageReset}>取り消す</button>
+              </div>
+            ) : (
+              <div>
+                <p>ドラッグアンドドロップ</p>
+                <p>またはクリックで挿入</p>
+              </div>
+            )}
+          </div>
+
           <button type="submit" className="signup-button">
             作成
           </button>
+          <p>
+            アカウントをお持ちですか？<Link to="/signin">ログインはこちら</Link>
+          </p>
         </form>
       </main>
-    </div>
+    </>
   )
 }
