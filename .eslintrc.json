@@ -15,7 +15,8 @@
     "no-console": "warn",
     "no-unused-vars": "off",
     "no-undef": "off",
-    "@typescript-eslint/no-unused-vars": ["warn"]
+    "@typescript-eslint/no-unused-vars": ["warn"],
+    "react/react-in-jsx-scope": "off"
   },
 
   // 「Parsing error: Unexpected token」対策

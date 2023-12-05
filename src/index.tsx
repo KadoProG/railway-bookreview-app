@@ -1,14 +1,21 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+import { createRoot } from 'react-dom/client'
 import './index.scss'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
+import { CookiesProvider } from 'react-cookie'
+import { Provider } from 'react-redux'
+import { store } from './store'
+import { exit } from 'process'
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
+const container = document.getElementById('root')
+if (!container) exit()
+const root = createRoot(container)
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <Provider store={store}>
+    <CookiesProvider>
+      <App />
+    </CookiesProvider>
+  </Provider>
 )
 
 // If you want to start measuring performance in your app, pass a function

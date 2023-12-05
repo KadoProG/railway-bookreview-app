@@ -16,5 +16,9 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "__tests__/SignIn.test.tsx",
+    "__tests__/ExampleComponent.test.tsx"
+  ]
 }
