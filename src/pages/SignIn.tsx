@@ -7,6 +7,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { RootState, signIn } from '../authSlice'
 import { Header } from '../components/Header'
 import { url } from '../const'
+import Wait from '../components/Wait'
 
 export const SignIn = () => {
   const auth = useSelector((state: RootState) => state.auth.isSignIn)
@@ -18,6 +19,8 @@ export const SignIn = () => {
   const [email, setEmail] = useState<string>('') // メールアドレス
   const [password, setPassword] = useState<string>('') // パスワード
   const [errorMessage, setErrorMessage] = useState<string>('') // エラーメッセージ
+
+  const [postState, setPostState] = useState<number>(-1)
 
   // eslint-disable-next-line
   const [cookies, setCookie] = useCookies()
@@ -33,14 +36,17 @@ export const SignIn = () => {
   // Submit時の処理
   const onSignIn = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setPostState(0)
     axios
       .post(`${url}/signin`, { email: email, password: password })
       .then((res) => {
+        setPostState(1)
         setCookie('token', res.data.token)
         dispatch(signIn())
         navigation('/')
       })
       .catch((err) => {
+        setPostState(-1)
         setErrorMessage(`サインインに失敗しました。${err}`)
       })
   }
@@ -50,12 +56,15 @@ export const SignIn = () => {
 
   return (
     <>
+      <Wait
+        nowIndex={postState}
+        title="リクエストを送信しています"
+        stateList={['ログイン']}
+      />
       <Header />
       <main className={styles.main}>
         <h2>サインイン</h2>
-        <p className={styles.error_message} id="error_message">
-          {errorMessage}
-        </p>
+        <p id="error_message">{errorMessage}</p>
         <form
           className={styles.form}
           onSubmit={onSignIn}
@@ -64,13 +73,16 @@ export const SignIn = () => {
         >
           <label htmlFor="email">メールアドレス</label>
           <input
-            type="text"
+            type="email"
             value={email}
             id="email"
+            required
             onChange={handleEmailChange}
           />
+
           <label htmlFor="password">パスワード</label>
           <input
+            required
             type="password"
             value={password}
             id="password"

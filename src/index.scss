@@ -69,3 +69,8 @@ body {
   background: var(--color-back0);
   padding-top: 48px;
 }
+
+#error_message {
+  color: red;
+  padding: 10px 0;
+}

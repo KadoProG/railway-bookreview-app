@@ -5,7 +5,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
 import { RootState, signOut } from '../authSlice'
 
-export const Header = () => {
+type Props = {
+  user?: { name: string; iconUrl: string }
+}
+
+export const Header = (props: Props) => {
+  const user = props.user
   const auth = useSelector((state: RootState) => state.auth.isSignIn)
   const dispatch = useDispatch()
   const navigation = useNavigate()
@@ -15,7 +20,7 @@ export const Header = () => {
   const handleSignOut = () => {
     dispatch(signOut())
     removeCookie('token')
-    navigation('/signin')
+    navigation('/login')
   }
 
   return (
@@ -23,14 +28,20 @@ export const Header = () => {
       <Link to="/" className={styles.header__title}>
         <h1>書籍レビューアプリ</h1>
       </Link>
-      {auth ? (
-        <button
-          onClick={handleSignOut}
-          className="sign-out-button"
-          id="signout"
-        >
-          サインアウト
-        </button>
+      {auth && user ? (
+        <div className={styles.header__right}>
+          <div>
+            <p>{user.name}さん</p>
+            <button
+              onClick={handleSignOut}
+              className="sign-out-button"
+              id="signout"
+            >
+              サインアウト
+            </button>
+          </div>
+          <img src={user.iconUrl} alt="アイコン画像" />
+        </div>
       ) : (
         <></>
       )}

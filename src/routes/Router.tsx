@@ -11,7 +11,7 @@ export const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/signin" element={<SignIn />} />
+        <Route path="/login" element={<SignIn />} />
 
         <Route path="/signup" element={<SignUp />} />
         {auth ? (
@@ -25,10 +25,10 @@ export const Router = () => {
         ) : (
           <Route
             path="/*"
-            element={<Navigate to="/signin" state={{ permanent: false }} />}
+            element={<Navigate to="/login" state={{ permanent: false }} />}
           />
         )}
-        <Route element={<NotFound />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   )

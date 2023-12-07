@@ -11,13 +11,34 @@
   &__title {
     color: var(--color-title);
   }
-  & button {
-    background: none;
-    border: none;
-    color: var(--color-title);
-    cursor: pointer;
-    &:hover {
-      background: var(--color-gray);
+  &__right {
+    display: flex;
+    & > div {
+      width: 120px;
+      text-align: center;
+      // display: flex;
+      color: var(--color-title);
+      // overflow: hidden;
+      & p {
+        height: 24px;
+      }
+      & button {
+        height: 24px;
+        text-align: center;
+        width: 100%;
+        color: var(--color-title);
+        display: block;
+        background: none;
+        border: none;
+        cursor: pointer;
+        &:hover {
+          background: var(--color-button-hover);
+        }
+      }
+    }
+    & img {
+      width: 48px;
+      height: 48px;
     }
   }
 }

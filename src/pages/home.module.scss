@@ -1,0 +1,96 @@
+.main {
+  width: 100%;
+  max-width: 1300px;
+  min-height: calc(100svh - 48px);
+  margin: 0 auto;
+  padding: 10px;
+  background: var(--color-back1);
+  & h2 {
+    padding: 10px;
+  }
+}
+
+.books {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  justify-content: center;
+}
+
+.book {
+  width: calc(100% / 4 - 20px);
+  box-shadow: 0 0 2px var(--color-text);
+  padding: 10px;
+  margin: 10px;
+  & p {
+    font-size: 14px;
+  }
+  &_title {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  &_detail {
+    font-size: 14px;
+  }
+  &_review {
+    display: flex;
+    background: var(--color-back0);
+    &_left {
+      width: 45px;
+      height: calc(30px + 12px);
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+      & img {
+        width: 30px;
+        height: 30px;
+        @media screen and (prefers-color-scheme: 'dark') {
+          filter: invert(1);
+        }
+      }
+      & > p {
+        font-size: 10px;
+        line-height: 12px;
+      }
+    }
+    & > p {
+      font-size: 14px;
+    }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .book {
+    width: calc(100% / 3 - 20px);
+  }
+}
+@media screen and (max-width: 800px) {
+  .book {
+    width: calc(50% - 20px);
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .book {
+    width: 100%;
+  }
+}
+
+.pageScroll {
+  display: flex;
+  justify-content: center;
+  & * {
+    padding: 10px;
+    margin: 10px;
+    list-style: none;
+    border: none;
+    background: var(--color-back0);
+  }
+
+  & button {
+    cursor: pointer;
+    &:disabled {
+      cursor: default;
+    }
+  }
+}

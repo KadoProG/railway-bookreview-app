@@ -10,6 +10,7 @@
     padding: 10px;
   }
 }
+
 .form {
   border: 1px solid var(--color-text);
   width: 100%;
@@ -77,8 +78,4 @@
       }
     }
   }
-}
-.error_message {
-  color: red;
-  padding: 10px 0;
 }

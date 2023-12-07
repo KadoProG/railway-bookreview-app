@@ -1,26 +1,21 @@
 import styles from './signin.module.scss'
 
-import axios from 'axios'
 import { ChangeEvent, FormEvent, MouseEvent, useRef, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
-import { RootState, signIn } from '../authSlice'
+import { RootState } from '../authSlice'
 import { Header } from '../components/Header'
-import { url } from '../const'
 import Compressor from 'compressorjs'
 import Wait from '../components/Wait'
-
-const postImage = async (token: string, file: Blob) => {}
+import { fetchSignUp } from '../_utils/signUpUtils'
 
 export const SignUp = () => {
+  // ========= ステートメント
   const fileRef = useRef<HTMLInputElement>(null)
   const auth = useSelector((state: RootState) => state.auth.isSignIn)
   const dispatch = useDispatch()
   const navigation = useNavigate()
-
-  // APIリクエストの状態 0:アカウント登録 1:画像転送
-  const [postState, setPostState] = useState<number>(-1)
 
   // テキストボックスのステートメント
   const [email, setEmail] = useState<string>('') // メールアドレス
@@ -32,6 +27,9 @@ export const SignUp = () => {
 
   // eslint-disable-next-line
   const [cookies, setCookie] = useCookies()
+
+  // APIリクエストの状態 0:アカウント登録 1:画像転送
+  const [postState, setPostState] = useState<number>(-1)
 
   // 変更時の処理
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -88,29 +86,15 @@ export const SignUp = () => {
 
     const data = { email, name, password }
 
-    setPostState(0)
-
-    await axios
-      .post(`${url}/users`, data)
-      .then(async (res) => {
-        const token = res.data.token
-        dispatch(signIn())
-        setCookie('token', token)
-        setPostState(1)
-
-        await postImage(token, file)
-
-        navigation('/') // これが動的なリダイレクト的なやつ
-      })
-      .catch((err) => {
-        setPostState(-1)
-        return setErrorMessge(
-          `サインアップに失敗しました。 ${err.response.data.ErrorMessageJP}`
-        )
-      })
-      .catch((err) => {
-        return setErrorMessge(`エラー： ${err}`)
-      })
+    return await fetchSignUp(
+      data,
+      file,
+      setPostState,
+      dispatch,
+      setCookie,
+      setErrorMessge,
+      navigation
+    )
   }
 
   // すでにログインされている場合はリダイレクト的なことする
@@ -126,7 +110,7 @@ export const SignUp = () => {
       <Header />
       <main className={styles.main}>
         <h2>新規作成</h2>
-        <p className={styles.error_message}>{errorMessage}</p>
+        <p id="error_message">{errorMessage}</p>
         <form className={styles.form} onSubmit={onSignUp}>
           <label htmlFor="email">メールアドレス</label>
           <input
@@ -179,7 +163,7 @@ export const SignUp = () => {
             作成
           </button>
           <p>
-            アカウントをお持ちですか？<Link to="/signin">ログインはこちら</Link>
+            アカウントをお持ちですか？<Link to="/login">ログインはこちら</Link>
           </p>
         </form>
       </main>
