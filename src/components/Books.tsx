@@ -13,7 +13,7 @@ type Props = {
 export const Books = ({ setErrorMessage, styles }: Props) => {
   const [cookies] = useCookies() // クッキー
   const [books, setBooks] = useState<Book[]>([]) // 書籍リスト
-  const [page, setPage] = useState<number>(0) // ページ番号(nの場合、offset=n*10~n*10*9)
+  const [page, setPage] = useState<number>(0) // ページ番号(nの場合、offset=n*10~n*10+9)
 
   // ページ更新時データを取得
   useEffect(() => {

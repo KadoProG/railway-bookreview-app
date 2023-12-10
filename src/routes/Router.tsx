@@ -4,6 +4,7 @@ import { SignIn } from '../pages/SignIn'
 import { SignUp } from '../pages/SignUp'
 import { Home } from '../pages/Home'
 import { NotFound } from '../pages/NotFound'
+import { ChangeSession } from '../pages/test/ChangeSession'
 
 export const Router = () => {
   const auth = useSelector((state: any) => state.auth.isSignIn)
@@ -12,6 +13,7 @@ export const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<SignIn />} />
+        <Route path="/test" element={<ChangeSession />} />
 
         <Route path="/signup" element={<SignUp />} />
         {auth ? (

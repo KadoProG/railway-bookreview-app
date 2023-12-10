@@ -9,10 +9,10 @@ type Props = {
 export const BooksItem = ({ v, styles }: Props) => {
   return (
     <li key={v.id} className={styles.book}>
-      <h3 className={styles.book_title}>{v.title}</h3>
-      <p className={styles.book_detail}>{v.detail}</p>
-      <div className={styles.book_review}>
-        <div className={styles.book_review_left}>
+      <h3 className={styles.book__title}>{v.title}</h3>
+      <p className={styles.book__detail}>{v.detail}</p>
+      <div className={styles.book__review}>
+        <div className={styles.book__review__left}>
           <img src="/images/kkrn_icon_user_13.png" alt="ユーザアイコン" />
           <p>{v.reviewer}</p>
         </div>

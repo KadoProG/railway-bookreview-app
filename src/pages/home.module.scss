@@ -25,17 +25,17 @@
   & p {
     font-size: 14px;
   }
-  &_title {
+  &__title {
     font-size: 18px;
     font-weight: bold;
   }
-  &_detail {
+  &__detail {
     font-size: 14px;
   }
-  &_review {
+  &__review {
     display: flex;
     background: var(--color-back0);
-    &_left {
+    &__left {
       width: 45px;
       height: calc(30px + 12px);
       display: flex;
