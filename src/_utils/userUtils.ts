@@ -13,6 +13,11 @@ export const fetchGetUserData = async (
   dispatch: Dispatch<AnyAction>,
   removeCookie: (name: string, options?: CookieSetOptions | undefined) => void
 ) => {
+  // クッキーが存在しなかったらゲストユーザにする
+  if (!cookiesToken) {
+    setUser(undefined)
+    return
+  }
   try {
     const res = await axios.get(`${url}/users`, {
       headers: {

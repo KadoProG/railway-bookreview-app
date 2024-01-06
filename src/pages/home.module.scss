@@ -85,12 +85,14 @@
     list-style: none;
     border: none;
     background: var(--color-back0);
+    color: var(--color-text);
   }
 
   & button {
     cursor: pointer;
     &:disabled {
       cursor: default;
+      color: gray;
     }
   }
 }

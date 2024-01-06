@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { SignIn } from '../pages/SignIn'
 import { SignUp } from '../pages/SignUp'
 import { Home } from '../pages/Home'
@@ -16,19 +16,21 @@ export const Router = () => {
         <Route path="/test" element={<ChangeSession />} />
 
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/" element={<Home />} />
+
         {auth ? (
           <>
-            <Route path="/" element={<Home />} />
             {/* <Route path="/task/new" element={<NewTask />} />
             <Route path="/list/new" element={<NewList />} />
             <Route path="/lists/:listId/tasks/:taskId" element={<EditTask />} />
             <Route path="/lists/:listId/edit" element={<EditList />} /> */}
           </>
         ) : (
-          <Route
-            path="/*"
-            element={<Navigate to="/login" state={{ permanent: false }} />}
-          />
+          <></>
+          // <Route
+          //   path="/*"
+          //   element={<Navigate to="/login" state={{ permanent: false }} />}
+          // />
         )}
         <Route path="*" element={<NotFound />} />
       </Routes>

@@ -27,7 +27,7 @@ export const Home: React.FC = () => {
       removeCookie
     )
     // eslint-disable-next-line
-  }, [])
+  }, [cookies.token])
 
   return (
     <div>

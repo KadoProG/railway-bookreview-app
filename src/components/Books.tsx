@@ -19,14 +19,7 @@ export const Books = ({ setErrorMessage, styles }: Props) => {
   useEffect(() => {
     fetchBooks(cookies.token, setBooks, setErrorMessage, page * 10)
     // eslint-disable-next-line
-  }, [page])
-
-  // 起動時データを取得
-  useEffect(() => {
-    // 本データを取得
-    fetchBooks(cookies.token, setBooks, setErrorMessage, page)
-    // eslint-disable-next-line
-  }, [])
+  }, [page, cookies])
 
   return (
     <>
