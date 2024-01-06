@@ -13,7 +13,7 @@ export const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<SignIn />} />
-        <Route path="/test" element={<ChangeSession />} />
+        <Route path="/reset" element={<ChangeSession />} />
 
         <Route path="/signup" element={<SignUp />} />
         <Route path="/" element={<Home />} />
@@ -32,7 +32,7 @@ export const Router = () => {
           //   element={<Navigate to="/login" state={{ permanent: false }} />}
           // />
         )}
-        <Route path="*" element={<NotFound />} />
+        <Route path="/*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   )
