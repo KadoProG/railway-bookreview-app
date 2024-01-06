@@ -1,0 +1,45 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  background: var(--color-theme);
+  padding: 0 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 48px;
+  z-index: 10;
+  &__title {
+    color: var(--color-title);
+  }
+  &__right {
+    display: flex;
+    & > div {
+      width: 120px;
+      text-align: center;
+      // display: flex;
+      color: var(--color-title);
+      // overflow: hidden;
+      & p {
+        height: 24px;
+      }
+      & button {
+        height: 24px;
+        text-align: center;
+        width: 100%;
+        color: var(--color-title);
+        display: block;
+        background: none;
+        border: none;
+        cursor: pointer;
+        &:hover {
+          background: var(--color-button-hover);
+        }
+      }
+    }
+    & img {
+      width: 48px;
+      height: 48px;
+    }
+  }
+}

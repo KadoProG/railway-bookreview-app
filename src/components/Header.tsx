@@ -1,37 +1,51 @@
+import styles from './header.module.scss'
+
 import { useCookies } from 'react-cookie'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
 import { RootState, signOut } from '../authSlice'
 
-export const Header = () => {
+type Props = {
+  user?: { name: string; iconUrl: string }
+}
+
+export const Header = (props: Props) => {
+  const user = props.user
+    ? props.user
+    : { name: 'ゲスト', iconUrl: '/images/kkrn_icon_user_13.png' }
   const auth = useSelector((state: RootState) => state.auth.isSignIn)
   const dispatch = useDispatch()
   const navigation = useNavigate()
   // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies()
 
-  const handleSignOut = () => {
-    dispatch(signOut())
-    removeCookie('token')
-    navigation('/signin')
+  const handleSignClick = () => {
+    if (auth) {
+      dispatch(signOut())
+      removeCookie('token')
+    } else {
+      navigation('/login')
+    }
   }
 
   return (
-    <header className="header">
-      <Link to="/" className="header__title">
-        <h1>Todoアプリ</h1>
+    <header className={styles.header}>
+      <Link to="/" className={styles.header__title}>
+        <h1>書籍レビューアプリ</h1>
       </Link>
-      {auth ? (
-        <button
-          onClick={handleSignOut}
-          className="sign-out-button"
-          id="signout"
-        >
-          サインアウト
-        </button>
-      ) : (
-        <></>
-      )}
+      <div className={styles.header__right}>
+        <div>
+          <p>{user.name}さん</p>
+          <button
+            onClick={handleSignClick}
+            className="sign-out-button"
+            id="signout"
+          >
+            {auth ? 'サインアウト' : 'サインイン'}
+          </button>
+        </div>
+        <img src={user.iconUrl} alt="アイコン画像" />
+      </div>
     </header>
   )
 }

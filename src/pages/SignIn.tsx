@@ -1,3 +1,4 @@
+import styles from './signin.module.scss'
 import axios from 'axios'
 import { ChangeEvent, FormEvent, useState } from 'react'
 import { useCookies } from 'react-cookie'
@@ -6,6 +7,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { RootState, signIn } from '../authSlice'
 import { Header } from '../components/Header'
 import { url } from '../const'
+import Wait from '../components/Wait'
 
 export const SignIn = () => {
   const auth = useSelector((state: RootState) => state.auth.isSignIn)
@@ -17,6 +19,8 @@ export const SignIn = () => {
   const [email, setEmail] = useState<string>('') // メールアドレス
   const [password, setPassword] = useState<string>('') // パスワード
   const [errorMessage, setErrorMessage] = useState<string>('') // エラーメッセージ
+
+  const [postState, setPostState] = useState<number>(-1)
 
   // eslint-disable-next-line
   const [cookies, setCookie] = useCookies()
@@ -32,14 +36,17 @@ export const SignIn = () => {
   // Submit時の処理
   const onSignIn = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setPostState(0)
     axios
       .post(`${url}/signin`, { email: email, password: password })
       .then((res) => {
+        setPostState(1)
         setCookie('token', res.data.token)
         dispatch(signIn())
         navigation('/')
       })
       .catch((err) => {
+        setPostState(-1)
         setErrorMessage(`サインインに失敗しました。${err}`)
       })
   }
@@ -48,49 +55,45 @@ export const SignIn = () => {
   if (auth) return <Navigate to="/" state={{ permanent: false }} />
 
   return (
-    <div>
+    <>
+      <Wait
+        nowIndex={postState}
+        title="リクエストを送信しています"
+        stateList={['ログイン']}
+      />
       <Header />
-      <main className="signin">
+      <main className={styles.main}>
         <h2>サインイン</h2>
-        <p className="error-message" id="error_message">
-          {errorMessage}
-        </p>
+        <p id="error_message">{errorMessage}</p>
         <form
-          className="signin-form"
+          className={styles.form}
           onSubmit={onSignIn}
           id="form"
           data-testid="signin-form"
         >
-          <label className="email-label" htmlFor="email">
-            メールアドレス
-          </label>
-          <br />
+          <label htmlFor="email">メールアドレス</label>
           <input
-            type="text"
-            className="email-input"
+            type="email"
             value={email}
             id="email"
+            required
             onChange={handleEmailChange}
           />
-          <br />
-          <label className="password-label" htmlFor="password">
-            パスワード
-          </label>
-          <br />
+
+          <label htmlFor="password">パスワード</label>
           <input
+            required
             type="password"
-            className="password-input"
             value={password}
             id="password"
             onChange={handlePasswordChange}
           />
-          <br />
-          <button type="submit" className="signin-button">
-            サインイン
-          </button>
+          <button type="submit">サインイン</button>
+          <p>
+            アカウントがありませんか？<Link to="/signup">新規作成はこちら</Link>
+          </p>
         </form>
-        <Link to="/signup">新規作成</Link>
       </main>
-    </div>
+    </>
   )
 }
