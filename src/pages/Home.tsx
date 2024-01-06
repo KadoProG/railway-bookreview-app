@@ -1,8 +1,8 @@
-import styles from './home.module.scss'
+import styles from './Home.module.scss'
 
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
-import { Header } from '../components/Header'
+import { Header } from '../components/commons/Header'
 import { fetchGetUserData } from '../_utils/userUtils'
 import { Books } from '../components/Books'
 import { useDispatch } from 'react-redux'

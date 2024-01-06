@@ -5,7 +5,7 @@ import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { RootState, signIn } from '../authSlice'
-import { Header } from '../components/Header'
+import { Header } from '../components/commons/Header'
 import { url } from '../const'
 import Wait from '../components/Wait'
 

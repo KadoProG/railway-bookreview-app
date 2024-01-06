@@ -3,7 +3,7 @@ import styles from './header.module.scss'
 import { useCookies } from 'react-cookie'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
-import { RootState, signOut } from '../authSlice'
+import { RootState, signOut } from '../../authSlice'
 
 type Props = {
   user?: { name: string; iconUrl: string }
