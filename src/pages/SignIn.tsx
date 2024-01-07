@@ -10,6 +10,7 @@ import Wait from '../components/Wait'
 import { InputText } from '../components/commons/InputText'
 import { Main } from '../components/commons/Main'
 import { Form } from '../components/commons/Form'
+import Footer from '../components/commons/Footer'
 
 export const SignIn = () => {
   const auth = useSelector((state: RootState) => state.auth.isSignIn)
@@ -89,6 +90,7 @@ export const SignIn = () => {
           </p>
         </Form>
       </Main>
+      <Footer />
     </>
   )
 }

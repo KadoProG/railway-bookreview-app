@@ -10,6 +10,7 @@ import { InputText } from '../components/commons/InputText'
 import { Main } from '../components/commons/Main'
 import { Form } from '../components/commons/Form'
 import { UploadImage } from '../components/UploadImage'
+import Footer from '../components/commons/Footer'
 
 export const SignUp = () => {
   // ========= ステートメント
@@ -118,6 +119,7 @@ export const SignUp = () => {
           </p>
         </Form>
       </Main>
+      <Footer />
     </>
   )
 }
