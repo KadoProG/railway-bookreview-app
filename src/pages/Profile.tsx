@@ -13,6 +13,7 @@ import {
 } from '../_utils/profileUtils'
 import { Navigate } from 'react-router-dom'
 import { RootState } from '../authSlice'
+import Footer from '../components/commons/Footer'
 
 export const Profile: React.FC = () => {
   // ========= ステートメント
@@ -102,6 +103,7 @@ export const Profile: React.FC = () => {
           <button type="submit">画像を更新</button>
         </Form>
       </Main>
+      <Footer />
     </>
   )
 }

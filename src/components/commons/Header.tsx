@@ -23,9 +23,8 @@ export const Header = (props: Props) => {
     if (auth) {
       dispatch(signOut())
       removeCookie('token')
-    } else {
-      navigation('/login')
     }
+    navigation('/login')
   }
 
   return (
