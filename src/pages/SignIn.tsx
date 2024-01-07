@@ -1,4 +1,3 @@
-import styles from './signin.module.scss'
 import axios from 'axios'
 import { ChangeEvent, FormEvent, useState } from 'react'
 import { useCookies } from 'react-cookie'
@@ -9,6 +8,8 @@ import { Header } from '../components/commons/Header'
 import { url } from '../const'
 import Wait from '../components/Wait'
 import { InputText } from '../components/commons/InputText'
+import { Main } from '../components/commons/Main'
+import { Form } from '../components/commons/Form'
 
 export const SignIn = () => {
   const auth = useSelector((state: RootState) => state.auth.isSignIn)
@@ -63,15 +64,8 @@ export const SignIn = () => {
         stateList={['ログイン']}
       />
       <Header />
-      <main className={styles.main}>
-        <h2>サインイン</h2>
-        <p id="error_message">{errorMessage}</p>
-        <form
-          className={styles.form}
-          onSubmit={onSignIn}
-          id="form"
-          data-testid="signin-form"
-        >
+      <Main title="サインイン" errorMessage={errorMessage}>
+        <Form onSubmit={onSignIn} id="form" dataTestid="signin-form">
           <InputText
             inputType="email"
             id="email"
@@ -93,8 +87,8 @@ export const SignIn = () => {
           <p>
             アカウントがありませんか？<Link to="/signup">新規作成はこちら</Link>
           </p>
-        </form>
-      </main>
+        </Form>
+      </Main>
     </>
   )
 }

@@ -1,4 +1,4 @@
-import styles from './signin.module.scss'
+import styles from './SignUp.module.scss'
 
 import { ChangeEvent, FormEvent, MouseEvent, useRef, useState } from 'react'
 import { useCookies } from 'react-cookie'
@@ -10,6 +10,8 @@ import Compressor from 'compressorjs'
 import Wait from '../components/Wait'
 import { fetchSignUp } from '../_utils/signUpUtils'
 import { InputText } from '../components/commons/InputText'
+import { Main } from '../components/commons/Main'
+import { Form } from '../components/commons/Form'
 
 export const SignUp = () => {
   // ========= ステートメント
@@ -109,10 +111,8 @@ export const SignUp = () => {
         stateList={['ユーザ登録', '画像の送信']}
       />
       <Header />
-      <main className={styles.main}>
-        <h2>新規作成</h2>
-        <p id="error_message">{errorMessage}</p>
-        <form className={styles.form} onSubmit={onSignUp}>
+      <Main title="新規作成" errorMessage={errorMessage}>
+        <Form onSubmit={onSignUp}>
           <InputText
             inputType="email"
             id="email"
@@ -171,8 +171,8 @@ export const SignUp = () => {
           <p>
             アカウントをお持ちですか？<Link to="/login">ログインはこちら</Link>
           </p>
-        </form>
-      </main>
+        </Form>
+      </Main>
     </>
   )
 }

@@ -1,15 +1,3 @@
-.main {
-  width: 100%;
-  max-width: 1300px;
-  min-height: calc(100svh - 48px);
-  margin: 0 auto;
-  padding: 10px;
-  background: var(--color-back1);
-  & h2 {
-    padding: 10px;
-  }
-}
-
 .books {
   display: flex;
   flex-wrap: wrap;

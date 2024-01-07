@@ -6,6 +6,7 @@ import { Header } from '../components/commons/Header'
 import { fetchGetUserData } from '../_utils/userUtils'
 import { Books } from '../components/Books'
 import { useDispatch } from 'react-redux'
+import { Main } from '../components/commons/Main'
 
 // HOME画面
 export const Home: React.FC = () => {
@@ -32,10 +33,9 @@ export const Home: React.FC = () => {
   return (
     <div>
       <Header user={user} />
-      <main className={styles.main}>
-        <p id="error_message">{errorMessage}</p>
+      <Main title="書籍リスト" errorMessage={errorMessage}>
         <Books setErrorMessage={setErrorMessage} styles={styles} />
-      </main>
+      </Main>
     </div>
   )
 }
