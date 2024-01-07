@@ -1,21 +1,18 @@
-import styles from './SignUp.module.scss'
-
-import { ChangeEvent, FormEvent, MouseEvent, useRef, useState } from 'react'
+import { ChangeEvent, FormEvent, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { RootState } from '../authSlice'
 import { Header } from '../components/commons/Header'
-import Compressor from 'compressorjs'
 import Wait from '../components/Wait'
 import { fetchSignUp } from '../_utils/signUpUtils'
 import { InputText } from '../components/commons/InputText'
 import { Main } from '../components/commons/Main'
 import { Form } from '../components/commons/Form'
+import { UploadImage } from '../components/UploadImage'
 
 export const SignUp = () => {
   // ========= ステートメント
-  const fileRef = useRef<HTMLInputElement>(null)
   const auth = useSelector((state: RootState) => state.auth.isSignIn)
   const dispatch = useDispatch()
   const navigation = useNavigate()
@@ -43,37 +40,6 @@ export const SignUp = () => {
   }
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value)
-  }
-
-  // 画像リセットの処理
-  const handleImageReset = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    setFile(undefined)
-    if (fileRef.current) fileRef.current.value = ''
-  }
-
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files
-    if (files === null) return
-    const data = files[0]
-    if (data === undefined) return
-
-    const sizeQuality = data.size > 1000000 ? 1000000 / data.size : 1
-
-    new Compressor(data, {
-      quality: sizeQuality,
-      success(result) {
-        // 圧縮完了
-        if (result.size > 1000000) {
-          setErrorMessge('画像が大きすぎます')
-          return
-        }
-        setFile(result)
-      },
-      error(error) {
-        setErrorMessge('画像アップロードに失敗しました')
-      },
-    })
   }
 
   // Submit時の処理
@@ -138,32 +104,11 @@ export const SignUp = () => {
             onChange={handlePasswordChange}
           />
 
-          <label htmlFor="file">アイコン画像</label>
-          <div className={styles.form__image}>
-            <input
-              ref={fileRef}
-              type="file"
-              accept=".png, .jpg"
-              onChange={handleImageChange}
-              id="file"
-            />
-            {file ? (
-              <div className={styles.form__image__container}>
-                <img
-                  src={URL.createObjectURL(file)}
-                  alt="アイコン用画像"
-                  width={100}
-                  height={100}
-                />
-                <button onClick={handleImageReset}>取り消す</button>
-              </div>
-            ) : (
-              <div>
-                <p>ドラッグアンドドロップ</p>
-                <p>またはクリックで挿入</p>
-              </div>
-            )}
-          </div>
+          <UploadImage
+            setErrorMessage={setErrorMessge}
+            file={file}
+            setFile={setFile}
+          />
 
           <button type="submit" className="signup-button">
             作成

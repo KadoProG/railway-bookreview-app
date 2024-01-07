@@ -25,6 +25,7 @@ export const fetchGetUserData = async (
       },
     })
     setUser(res.data)
+    return res.data
   } catch (err: any) {
     if (err.response) {
       // 401 認証エラー
