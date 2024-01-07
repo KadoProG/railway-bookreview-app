@@ -8,6 +8,7 @@ import { RootState, signIn } from '../authSlice'
 import { Header } from '../components/commons/Header'
 import { url } from '../const'
 import Wait from '../components/Wait'
+import { InputText } from '../components/commons/InputText'
 
 export const SignIn = () => {
   const auth = useSelector((state: RootState) => state.auth.isSignIn)
@@ -71,23 +72,23 @@ export const SignIn = () => {
           id="form"
           data-testid="signin-form"
         >
-          <label htmlFor="email">メールアドレス</label>
-          <input
-            type="email"
-            value={email}
+          <InputText
+            inputType="email"
             id="email"
-            required
+            value={email}
+            labelText="メールアドレス"
             onChange={handleEmailChange}
+            autoFocus
           />
 
-          <label htmlFor="password">パスワード</label>
-          <input
-            required
-            type="password"
-            value={password}
+          <InputText
+            inputType="password"
             id="password"
+            value={password}
+            labelText="パスワード"
             onChange={handlePasswordChange}
           />
+
           <button type="submit">サインイン</button>
           <p>
             アカウントがありませんか？<Link to="/signup">新規作成はこちら</Link>

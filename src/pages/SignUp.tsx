@@ -9,6 +9,7 @@ import { Header } from '../components/commons/Header'
 import Compressor from 'compressorjs'
 import Wait from '../components/Wait'
 import { fetchSignUp } from '../_utils/signUpUtils'
+import { InputText } from '../components/commons/InputText'
 
 export const SignUp = () => {
   // ========= ステートメント
@@ -112,24 +113,29 @@ export const SignUp = () => {
         <h2>新規作成</h2>
         <p id="error_message">{errorMessage}</p>
         <form className={styles.form} onSubmit={onSignUp}>
-          <label htmlFor="email">メールアドレス</label>
-          <input
-            required
-            autoFocus={true}
-            type="email"
+          <InputText
+            inputType="email"
             id="email"
+            value={email}
+            labelText="メールアドレス"
             onChange={handleEmailChange}
+            autoFocus
           />
 
-          <label htmlFor="name">ユーザ名</label>
-          <input required type="text" onChange={handleNameChange} id="name" />
+          <InputText
+            inputType="text"
+            id="name"
+            value={name}
+            labelText="ユーザ名"
+            onChange={handleNameChange}
+          />
 
-          <label htmlFor="password">パスワード</label>
-          <input
-            required
-            type="password"
-            onChange={handlePasswordChange}
+          <InputText
+            inputType="password"
             id="password"
+            value={password}
+            labelText="パスワード"
+            onChange={handlePasswordChange}
           />
 
           <label htmlFor="file">アイコン画像</label>
