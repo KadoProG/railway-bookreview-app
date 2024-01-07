@@ -35,12 +35,18 @@ export const Header = (props: Props) => {
       </Link>
       <div className={styles.header__right}>
         <div>
-          <p>{user.name}さん</p>
-          <button
-            onClick={handleSignClick}
-            className="sign-out-button"
-            id="signout"
-          >
+          {auth ? (
+            <button
+              className="disabled"
+              title="ユーザを編集する"
+              onClick={() => navigation('/profile')}
+            >
+              {user.name}さん
+            </button>
+          ) : (
+            <p>{user.name}さん</p>
+          )}
+          <button onClick={handleSignClick} id="signout">
             {auth ? 'サインアウト' : 'サインイン'}
           </button>
         </div>

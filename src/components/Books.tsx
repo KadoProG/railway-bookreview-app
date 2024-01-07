@@ -23,7 +23,6 @@ export const Books = ({ setErrorMessage, styles }: Props) => {
 
   return (
     <>
-      <h2>書籍リスト</h2>
       <ul className={styles.books}>
         {books.map((v) => {
           return <BooksItem key={v.id} v={v} styles={styles} />

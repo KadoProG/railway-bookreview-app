@@ -4,6 +4,7 @@ import { Dispatch } from 'react'
 import { AnyAction } from '@reduxjs/toolkit'
 import { signIn } from '../authSlice'
 import { NavigateFunction } from 'react-router-dom'
+import { fetchUserImageEdit } from './profileUtils'
 
 type SendData = {
   email: string
@@ -31,11 +32,16 @@ export const fetchSignUp = async (
       const token = res.data.token
 
       setPostState(1)
+      const imageResponse = await fetchUserImageEdit(file, token)
+      if (imageResponse) {
+        setPostState(2)
+      }
 
-      await postImage(token, file, setPostState, navigation)
-
-      dispatch(signIn())
-      setCookie('token', token)
+      setTimeout(() => {
+        navigation('/')
+        dispatch(signIn())
+        setCookie('token', token)
+      }, 100)
     })
     .catch((err) => {
       setPostState(-1)
@@ -45,30 +51,5 @@ export const fetchSignUp = async (
     })
     .catch((err) => {
       return setErrorMessage(`エラー： ${err}`)
-    })
-}
-
-const postImage = async (
-  token: string,
-  file: Blob,
-  setPostState: (num: number) => void,
-  navigation: NavigateFunction
-) => {
-  const data = new FormData()
-  data.append('icon', file)
-
-  await axios
-    .post(`${url}/uploads`, data, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then((res) => {
-      setPostState(2)
-      navigation('/') // これが動的なリダイレクト的なやつ
-    })
-    .catch((e) => {
-      navigation('/') // これが動的なリダイレクト的なやつ
     })
 }
