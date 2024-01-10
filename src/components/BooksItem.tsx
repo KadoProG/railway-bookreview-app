@@ -1,18 +1,39 @@
-import { Link } from 'react-router-dom'
-import { Book } from '../_utils/homeUtils'
+import { useNavigate } from 'react-router-dom'
+import { Book, fetchPOSTLog } from '../_utils/homeUtils'
+import { useCookies } from 'react-cookie'
 
 type Props = {
+  setErrorMessage: (str: string) => void
   v: Book
   styles: {
     readonly [key: string]: string
   }
 }
-export const BooksItem = ({ v, styles }: Props) => {
+export const BooksItem = ({ setErrorMessage, v, styles }: Props) => {
+  const [cookies] = useCookies() // クッキー
+  const navigation = useNavigate()
+
+  // トークンが設定されていたら詳細にアクセスできるように＋APIにログを送信
+  const handleClick = async () => {
+    if (!!cookies.token) {
+      const res = await fetchPOSTLog(cookies.token, v.id, setErrorMessage)
+      if (!res) return
+      navigation(`/detail/${v.id}`)
+    }
+  }
   return (
     <li key={v.id} className={styles.book}>
-      <Link to={`/detail/${v.id}`}>
+      <button
+        onClick={handleClick}
+        style={{
+          border: 'none',
+          background: 'transparent',
+          width: '100%',
+          cursor: 'pointer',
+        }}
+      >
         <h3 className={styles.book__title}>{v.title}</h3>
-      </Link>
+      </button>
       <p className={styles.book__detail}>{v.detail}</p>
       <div className={styles.book__review}>
         <div className={styles.book__review__left}>
