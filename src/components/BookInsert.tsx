@@ -1,15 +1,21 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { Form } from './commons/Form'
 import { InputText } from './commons/InputText'
-import { fetchBookInsert } from '../_utils/bookInsertUtils'
+import { fetchBookDelete, fetchBookInsert } from '../_utils/bookInsertUtils'
 import { useNavigate } from 'react-router-dom'
+import { fetchGETBookDetail } from '../_utils/booksDetailUtils'
+import { Book } from '../_utils/homeUtils'
 
 type Props = {
   setErrorMessage(str: string): void
+  bookId?: string
 }
 
-export const BookInsert: React.FC<Props> = ({ setErrorMessage }: Props) => {
+export const BookInsert: React.FC<Props> = ({
+  setErrorMessage,
+  bookId,
+}: Props) => {
   // eslint-disable-next-line
   const [cookies] = useCookies() // クッキー
   const navigation = useNavigate()
@@ -22,12 +28,43 @@ export const BookInsert: React.FC<Props> = ({ setErrorMessage }: Props) => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const data = { title, url, detail, review }
-    fetchBookInsert(data, setErrorMessage, cookies.token).then((res) => {
+    fetchBookInsert(data, setErrorMessage, cookies.token, bookId).then(
+      (res) => {
+        if (res) {
+          navigation('/')
+        }
+      }
+    )
+  }
+
+  const handleDelete = (e: any) => {
+    e.preventDefault()
+    if (!bookId) return
+    if (!confirm('本当に削除してよろしいですか？')) return //eslint-disable-line
+    fetchBookDelete(bookId, cookies.token, setErrorMessage).then((res) => {
       if (res) {
         navigation('/')
       }
     })
   }
+
+  // ステートの更新
+  const setBook = (book: Book) => {
+    if (!book.isMine) navigation('/new')
+    setTitle(book.title)
+    setUrl(book.url)
+    setDetail(book.detail)
+    setReview(book.review)
+  }
+
+  // 起動時実行
+  useEffect(() => {
+    if (bookId) {
+      // 編集モード
+      fetchGETBookDetail(bookId, setErrorMessage, cookies.token, setBook)
+    }
+    // eslint-disable-next-line
+  }, [])
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -59,7 +96,15 @@ export const BookInsert: React.FC<Props> = ({ setErrorMessage }: Props) => {
         onChange={setReview}
         id="review"
       />
-      <button type="submit">書籍を登録する</button>
+      <button type="submit">書籍を登録・更新する</button>
+      {!!bookId && (
+        <button
+          onClick={handleDelete}
+          style={{ background: 'var(--color-error)' }}
+        >
+          <p>削除する</p>
+        </button>
+      )}
     </Form>
   )
 }

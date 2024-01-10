@@ -8,6 +8,7 @@ import { ChangeSession } from '../pages/test/ChangeSession'
 import { Profile } from '../pages/Profile'
 import { New } from '../pages/New'
 import { Detail } from '../pages/Detail'
+import { Edit } from '../pages/Edit'
 
 export const Router = () => {
   const auth = useSelector((state: any) => state.auth.isSignIn)
@@ -23,6 +24,7 @@ export const Router = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/new" element={<New />} />
         <Route path="/detail/:bookId" element={<Detail />} />
+        <Route path="/edit/:bookId" element={<Edit />} />
 
         {auth ? (
           <>
