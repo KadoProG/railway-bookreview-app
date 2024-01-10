@@ -2,6 +2,8 @@ import { FormEvent, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { Form } from './commons/Form'
 import { InputText } from './commons/InputText'
+import { fetchBookInsert } from '../_utils/bookInsertUtils'
+import { useNavigate } from 'react-router-dom'
 
 type Props = {
   setErrorMessage(str: string): void
@@ -10,6 +12,7 @@ type Props = {
 export const BookInsert: React.FC<Props> = ({ setErrorMessage }: Props) => {
   // eslint-disable-next-line
   const [cookies] = useCookies() // クッキー
+  const navigation = useNavigate()
   // 書籍のステートメント
   const [title, setTitle] = useState<string>('')
   const [url, setUrl] = useState<string>('')
@@ -18,6 +21,12 @@ export const BookInsert: React.FC<Props> = ({ setErrorMessage }: Props) => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    const data = { title, url, detail, review }
+    fetchBookInsert(data, setErrorMessage, cookies.token).then((res) => {
+      if (res) {
+        navigation('/')
+      }
+    })
   }
 
   return (
