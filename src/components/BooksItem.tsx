@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Book, fetchPOSTLog } from '../_utils/homeUtils'
 import { useCookies } from 'react-cookie'
 
@@ -46,7 +46,8 @@ export const BooksItem = ({ setErrorMessage, v, styles }: Props) => {
         <a href={v.url} target="_blank" rel="noopener noreferrer">
           書籍リンクはこちら
         </a>
-        自分：{v.isMine ? 'はい' : 'いいえ'}
+        <span> </span>
+        {v.isMine && <Link to={`/edit/${v.id}`}>編集する</Link>}
       </p>
     </li>
   )

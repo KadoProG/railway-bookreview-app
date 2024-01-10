@@ -4,7 +4,7 @@ import { useCookies } from 'react-cookie'
 import { Book } from '../_utils/homeUtils'
 import { Form } from './commons/Form'
 import ReactLoading from 'react-loading'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 interface Props {
   setErrorMessage(str: string): void
@@ -17,6 +17,7 @@ export const BooksDetail: React.FC<Props> = ({
   const [cookies] = useCookies() // クッキー
   const [book, setBook] = useState<Book>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const navigation = useNavigate()
 
   useEffect(() => {
     setIsLoading(true)
@@ -28,6 +29,11 @@ export const BooksDetail: React.FC<Props> = ({
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+  }
+
+  const handleEdit = (e: any) => {
+    e.preventDefault()
+    navigation(`/edit/${book?.id}`)
   }
 
   return (
@@ -64,6 +70,15 @@ export const BooksDetail: React.FC<Props> = ({
                 <p>{book.url}</p>
               </Link>
             )}
+            <div style={{ margin: '10px' }}>
+              {book?.isMine && (
+                <div style={{ display: 'flex' }}>
+                  <button onClick={handleEdit}>
+                    <p>編集する</p>
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </Form>

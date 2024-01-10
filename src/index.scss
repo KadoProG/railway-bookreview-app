@@ -32,6 +32,7 @@ code {
   --color-button-hover: #ceefff;
   --opac-img: 100%;
   --opac-invert: none;
+  --color-error: #faa;
 }
 
 // ダークモードの動作
@@ -43,6 +44,7 @@ code {
     --color-back1: #222;
     --color-theme: #17465a;
     --color-text: #ddd;
+    --color-error: #900;
     --color-title: #ddd;
     --color-gray: rgb(43, 76, 81);
     --color-panel-main__btnListItem: linear-gradient(#29343c, #292c3c);
