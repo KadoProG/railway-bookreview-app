@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
@@ -31,17 +31,6 @@ export const SignUp = () => {
 
   // APIリクエストの状態 0:アカウント登録 1:画像転送
   const [postState, setPostState] = useState<number>(-1)
-
-  // 変更時の処理
-  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value)
-  }
-  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value)
-  }
-  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value)
-  }
 
   // Submit時の処理
   const onSignUp = async (e: FormEvent<HTMLFormElement>) => {
@@ -85,7 +74,7 @@ export const SignUp = () => {
             id="email"
             value={email}
             labelText="メールアドレス"
-            onChange={handleEmailChange}
+            onChange={setEmail}
             autoFocus
           />
 
@@ -94,7 +83,7 @@ export const SignUp = () => {
             id="name"
             value={name}
             labelText="ユーザ名"
-            onChange={handleNameChange}
+            onChange={setName}
           />
 
           <InputText
@@ -102,7 +91,7 @@ export const SignUp = () => {
             id="password"
             value={password}
             labelText="パスワード"
-            onChange={handlePasswordChange}
+            onChange={setPassword}
           />
 
           <UploadImage

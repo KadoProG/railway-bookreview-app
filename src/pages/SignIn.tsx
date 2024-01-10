@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ChangeEvent, FormEvent, useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
@@ -27,14 +27,6 @@ export const SignIn = () => {
 
   // eslint-disable-next-line
   const [cookies, setCookie] = useCookies()
-
-  // 変更時の処理
-  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value)
-  }
-  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value)
-  }
 
   // Submit時の処理
   const onSignIn = (e: FormEvent<HTMLFormElement>) => {
@@ -72,7 +64,7 @@ export const SignIn = () => {
             id="email"
             value={email}
             labelText="メールアドレス"
-            onChange={handleEmailChange}
+            onChange={setEmail}
             autoFocus
           />
 
@@ -81,7 +73,7 @@ export const SignIn = () => {
             id="password"
             value={password}
             labelText="パスワード"
-            onChange={handlePasswordChange}
+            onChange={setPassword}
           />
 
           <button type="submit">サインイン</button>
