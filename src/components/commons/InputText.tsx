@@ -1,13 +1,12 @@
 import styles from './InputText.module.scss'
-import { ChangeEvent } from 'react'
 
 interface Props {
-  inputType: 'text' | 'email' | 'password'
+  inputType: 'text' | 'email' | 'password' | 'textarea'
   labelText: string
   autoFocus?: boolean
   id: string
   value: string
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void
+  onChange: (str: string) => void
 }
 export const InputText = ({
   inputType,
@@ -17,20 +16,33 @@ export const InputText = ({
   onChange,
   id,
 }: Props) => {
+  if (inputType === 'textarea') {
+  }
   return (
     <>
       <label htmlFor={id} className={styles.label}>
         {labelText}
       </label>
-      <input
-        required
-        className={styles.input}
-        autoFocus={!!autoFocus}
-        type={inputType}
-        id={id}
-        value={value}
-        onChange={onChange}
-      />
+      {inputType === 'textarea' ? (
+        <textarea
+          required
+          className={styles.textarea}
+          autoFocus={!!autoFocus}
+          id={id}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        />
+      ) : (
+        <input
+          required
+          className={styles.input}
+          autoFocus={!!autoFocus}
+          type={inputType}
+          id={id}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        />
+      )}
     </>
   )
 }

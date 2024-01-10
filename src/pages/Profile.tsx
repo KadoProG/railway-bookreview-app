@@ -81,7 +81,7 @@ export const Profile: React.FC = () => {
             id="name"
             value={name}
             labelText="ユーザ名"
-            onChange={(e) => setName(e.target.value)}
+            onChange={setName}
           />
           <button type="submit">ユーザ名を更新します</button>
         </Form>

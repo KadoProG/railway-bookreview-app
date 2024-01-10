@@ -84,3 +84,12 @@
     }
   }
 }
+.linkButton {
+  display: inline-block;
+  padding: 10px;
+  margin: 10px;
+  list-style: none;
+  border: none;
+  background: var(--color-back0);
+  color: var(--color-text);
+}
