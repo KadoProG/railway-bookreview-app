@@ -16,6 +16,10 @@
   &__title {
     font-size: 18px;
     font-weight: bold;
+    color: var(--color-text);
+    &:hover {
+      text-decoration: underline;
+    }
   }
   &__detail {
     font-size: 14px;

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { Book } from '../_utils/homeUtils'
 
 type Props = {
@@ -9,7 +10,9 @@ type Props = {
 export const BooksItem = ({ v, styles }: Props) => {
   return (
     <li key={v.id} className={styles.book}>
-      <h3 className={styles.book__title}>{v.title}</h3>
+      <Link to={`/detail/${v.id}`}>
+        <h3 className={styles.book__title}>{v.title}</h3>
+      </Link>
       <p className={styles.book__detail}>{v.detail}</p>
       <div className={styles.book__review}>
         <div className={styles.book__review__left}>
