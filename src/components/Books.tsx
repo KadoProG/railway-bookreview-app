@@ -36,7 +36,14 @@ export const Books: React.FC<Props> = ({ setErrorMessage, styles }: Props) => {
 
       <ul className={styles.books}>
         {books.map((v) => {
-          return <BooksItem key={v.id} v={v} styles={styles} />
+          return (
+            <BooksItem
+              key={v.id}
+              v={v}
+              styles={styles}
+              setErrorMessage={setErrorMessage}
+            />
+          )
         })}
       </ul>
 

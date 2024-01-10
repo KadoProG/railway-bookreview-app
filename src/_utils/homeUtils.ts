@@ -51,3 +51,36 @@ export const fetchBooks = async (
     }
   }
 }
+
+export const fetchPOSTLog = async (
+  cookiesToken: string,
+  selectBookId: string,
+  setErrorMessage: (str: string) => void
+) => {
+  const data = { selectBookId }
+  try {
+    await axios.post(`${url}/logs`, data, {
+      headers: {
+        Authorization: `Bearer ${cookiesToken}`,
+      },
+    })
+    return true
+  } catch (err: any) {
+    if (err.response) {
+      if (err.response.status === 401) {
+        return setErrorMessage(
+          'データ取得に失敗しました。セッションの有効期限が切れたようです。'
+        )
+      }
+      if (err.response.data && err.response.data.ErrorMessageJP) {
+        setErrorMessage(
+          `データ取得に失敗しました。${err.response.data.ErrorMessageJP}`
+        )
+      } else {
+        setErrorMessage(`エラー：${err}`)
+      }
+    } else {
+      setErrorMessage(`エラー：${err}`)
+    }
+  }
+}
