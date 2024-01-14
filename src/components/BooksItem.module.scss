@@ -1,0 +1,45 @@
+.book {
+  width: calc(100% / 4 - 20px);
+  box-shadow: 0 0 2px var(--color-text);
+  padding: 10px;
+  margin: 10px;
+  & p {
+    font-size: 14px;
+  }
+  &__title {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--color-text);
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  &__detail {
+    font-size: 14px;
+  }
+  &__review {
+    display: flex;
+    background: var(--color-back0);
+    &__left {
+      width: 45px;
+      height: calc(30px + 12px);
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+      & img {
+        width: 30px;
+        height: 30px;
+        @media screen and (prefers-color-scheme: 'dark') {
+          filter: invert(1);
+        }
+      }
+      & > p {
+        font-size: 10px;
+        line-height: 12px;
+      }
+    }
+    & > p {
+      font-size: 14px;
+    }
+  }
+}

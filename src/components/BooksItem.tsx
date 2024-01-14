@@ -1,28 +1,26 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { Book, fetchPOSTLog } from '../_utils/homeUtils'
 import { useCookies } from 'react-cookie'
+import styles from './BooksItem.module.scss'
 
 type Props = {
   setErrorMessage: (str: string) => void
-  v: Book
-  styles: {
-    readonly [key: string]: string
-  }
+  book: Book
 }
-export const BooksItem = ({ setErrorMessage, v, styles }: Props) => {
+export const BooksItem = ({ setErrorMessage, book }: Props) => {
   const [cookies] = useCookies() // クッキー
   const navigation = useNavigate()
 
   // トークンが設定されていたら詳細にアクセスできるように＋APIにログを送信
   const handleClick = async () => {
     if (!!cookies.token) {
-      const res = await fetchPOSTLog(cookies.token, v.id, setErrorMessage)
+      const res = await fetchPOSTLog(cookies.token, book.id, setErrorMessage)
       if (!res) return
-      navigation(`/detail/${v.id}`)
+      navigation(`/detail/${book.id}`)
     }
   }
   return (
-    <li key={v.id} className={styles.book}>
+    <li key={book.id} className={styles.book}>
       <button
         onClick={handleClick}
         style={{
@@ -32,22 +30,22 @@ export const BooksItem = ({ setErrorMessage, v, styles }: Props) => {
           cursor: 'pointer',
         }}
       >
-        <h3 className={styles.book__title}>{v.title}</h3>
+        <h3 className={styles.book__title}>{book.title}</h3>
       </button>
-      <p className={styles.book__detail}>{v.detail}</p>
+      <p className={styles.book__detail}>{book.detail}</p>
       <div className={styles.book__review}>
         <div className={styles.book__review__left}>
           <img src="/images/kkrn_icon_user_13.png" alt="ユーザアイコン" />
-          <p>{v.reviewer}</p>
+          <p>{book.reviewer}</p>
         </div>
-        <p>{v.review}</p>
+        <p>{book.review}</p>
       </div>
       <p>
-        <a href={v.url} target="_blank" rel="noopener noreferrer">
+        <a href={book.url} target="_blank" rel="noopener noreferrer">
           書籍リンクはこちら
         </a>
         <span> </span>
-        {v.isMine && <Link to={`/edit/${v.id}`}>編集する</Link>}
+        {book.isMine && <Link to={`/edit/${book.id}`}>編集する</Link>}
       </p>
     </li>
   )

@@ -5,15 +5,13 @@ import { BooksItem } from './BooksItem'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '../authSlice'
+import styles from './Books.module.scss'
 
 type Props = {
   setErrorMessage(str: string): void
-  styles: {
-    readonly [key: string]: string
-  }
 }
 
-export const Books: React.FC<Props> = ({ setErrorMessage, styles }: Props) => {
+export const Books: React.FC<Props> = ({ setErrorMessage }: Props) => {
   const auth = useSelector((state: RootState) => state.auth.isSignIn)
 
   const [cookies] = useCookies() // クッキー
@@ -37,12 +35,7 @@ export const Books: React.FC<Props> = ({ setErrorMessage, styles }: Props) => {
       <ul className={styles.books}>
         {books.map((v) => {
           return (
-            <BooksItem
-              key={v.id}
-              v={v}
-              styles={styles}
-              setErrorMessage={setErrorMessage}
-            />
+            <BooksItem key={v.id} book={v} setErrorMessage={setErrorMessage} />
           )
         })}
       </ul>

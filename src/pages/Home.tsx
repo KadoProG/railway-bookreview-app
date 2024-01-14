@@ -1,5 +1,3 @@
-import styles from './Home.module.scss'
-
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { Header } from '../components/commons/Header'
@@ -35,7 +33,7 @@ export const Home: React.FC = () => {
     <div>
       <Header user={user} />
       <Main title="書籍リスト" errorMessage={errorMessage}>
-        <Books setErrorMessage={setErrorMessage} styles={styles} />
+        <Books setErrorMessage={setErrorMessage} />
       </Main>
       <Footer />
     </div>
