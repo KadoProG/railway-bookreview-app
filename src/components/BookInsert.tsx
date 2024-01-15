@@ -5,7 +5,6 @@ import { InputText } from './commons/InputText'
 import { fetchBookDelete, fetchBookInsert } from '../_utils/bookInsertUtils'
 import { useNavigate } from 'react-router-dom'
 import { fetchGETBookDetail } from '../_utils/booksDetailUtils'
-import { Book } from '../_utils/homeUtils'
 
 type Props = {
   setErrorMessage(str: string): void
@@ -51,23 +50,18 @@ export const BookInsert: React.FC<Props> = ({
     })
   }
 
-  // ステートの更新
-  const setBook = (book: Book) => {
-    if (!book.isMine) navigation('/new')
-    setTitle(book.title)
-    setUrl(book.url)
-    setDetail(book.detail)
-    setReview(book.review)
-  }
-
   // 起動時実行
   useEffect(() => {
     if (bookId) {
       // 編集モード
-      fetchGETBookDetail(bookId, setErrorMessage, cookies.token, setBook)
+      fetchGETBookDetail(bookId, setErrorMessage, cookies.token, (book) => {
+        setTitle(book.title)
+        setUrl(book.url)
+        setDetail(book.detail)
+        setReview(book.review)
+      })
     }
-    // eslint-disable-next-line
-  }, [])
+  }, [bookId, cookies.token, setErrorMessage])
 
   return (
     <Form onSubmit={handleSubmit}>
