@@ -21,8 +21,7 @@ export const Books: React.FC<Props> = ({ setErrorMessage }: Props) => {
   // ページ更新時データを取得
   useEffect(() => {
     fetchBooks(cookies.token, setBooks, setErrorMessage, page * 10)
-    // eslint-disable-next-line
-  }, [page, cookies])
+  }, [page, cookies, setErrorMessage])
 
   return (
     <>
