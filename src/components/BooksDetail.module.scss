@@ -1,0 +1,19 @@
+.container {
+  border: 1px solid var(--color-text);
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 16px;
+  & button {
+    width: 100%;
+    background: var(--color-button);
+    margin: 20px 0;
+    border: none;
+    padding: 10px;
+    color: var(--color-text);
+    cursor: pointer;
+    &:hover {
+      background: var(--color-button-hover);
+    }
+  }
+}
