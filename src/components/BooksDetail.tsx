@@ -1,10 +1,10 @@
-import { FormEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { fetchGETBookDetail } from '../_utils/booksDetailUtils'
 import { useCookies } from 'react-cookie'
 import { Book } from '../_utils/homeUtils'
-import { Form } from './commons/Form'
 import ReactLoading from 'react-loading'
 import { Link, useNavigate } from 'react-router-dom'
+import styles from './BooksDetail.module.scss'
 
 interface Props {
   setErrorMessage(str: string): void
@@ -26,10 +26,6 @@ export const BooksDetail: React.FC<Props> = ({
     )
   }, [cookies.token, bookId, setErrorMessage])
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-  }
-
   const handleEdit = (e: any) => {
     e.preventDefault()
     navigation(`/edit/${book?.id}`)
@@ -37,8 +33,7 @@ export const BooksDetail: React.FC<Props> = ({
 
   return (
     <>
-      {/* Form以外で */}
-      <Form onSubmit={handleSubmit}>
+      <div className={styles.container}>
         {isLoading ? (
           <div
             style={{
@@ -81,7 +76,7 @@ export const BooksDetail: React.FC<Props> = ({
             </div>
           </div>
         )}
-      </Form>
+      </div>
     </>
   )
 }
