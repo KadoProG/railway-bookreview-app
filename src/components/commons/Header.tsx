@@ -3,24 +3,36 @@ import styles from './header.module.scss'
 import { useCookies } from 'react-cookie'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
-import { RootState, signOut } from '../../authSlice'
+import { RootState, setUser, signOut } from '../../authSlice'
+import { fetchGetUserData } from '../../_utils/userUtils'
 
-type Props = {
-  user?: { name: string; iconUrl: string }
-}
+export const Header: React.FC = () => {
+  const { isSignIn, name, iconUrl } = useSelector(
+    (state: RootState) => state.auth
+  )
 
-export const Header = (props: Props) => {
-  const user = props.user
-    ? props.user
-    : { name: 'ゲスト', iconUrl: '/images/kkrn_icon_user_13.png' }
-  const auth = useSelector((state: RootState) => state.auth.isSignIn)
   const dispatch = useDispatch()
   const navigation = useNavigate()
-  // eslint-disable-next-line
-  const [cookies, setCookie, removeCookie] = useCookies()
+
+  const [cookies, , removeCookie] = useCookies()
+
+  const user = isSignIn
+    ? { name, iconUrl }
+    : { name: 'ゲスト', iconUrl: '/images/kkrn_icon_user_13.png' }
+
+  // サイトアクセス時、ユーザデータを取得（ページ遷移時は実行されない）
+  if (user.name === '') {
+    fetchGetUserData(
+      cookies.token,
+      (data) => dispatch(setUser(data)),
+      () => {},
+      dispatch,
+      removeCookie
+    )
+  }
 
   const handleSignClick = () => {
-    if (auth) {
+    if (isSignIn) {
       dispatch(signOut())
       removeCookie('token')
     }
@@ -34,7 +46,7 @@ export const Header = (props: Props) => {
       </Link>
       <div className={styles.header__right}>
         <div>
-          {auth ? (
+          {isSignIn ? (
             <button
               className="disabled"
               title="ユーザを編集する"
@@ -46,7 +58,7 @@ export const Header = (props: Props) => {
             <p>{user.name}さん</p>
           )}
           <button onClick={handleSignClick} id="signout">
-            {auth ? 'サインアウト' : 'サインイン'}
+            {isSignIn ? 'サインアウト' : 'サインイン'}
           </button>
         </div>
         <img src={user.iconUrl} alt="アイコン画像" />

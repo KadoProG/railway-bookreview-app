@@ -1,7 +1,7 @@
 import { FormEvent, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { RootState } from '../authSlice'
 import { Header } from '../components/commons/Header'
 import Wait from '../components/Wait'
@@ -16,7 +16,7 @@ export const SignUp = () => {
   // ========= ステートメント
   const auth = useSelector((state: RootState) => state.auth.isSignIn)
   const dispatch = useDispatch()
-  const navigation = useNavigate()
+  const [, setCookie] = useCookies()
 
   // テキストボックスのステートメント
   const [email, setEmail] = useState<string>('') // メールアドレス
@@ -25,9 +25,6 @@ export const SignUp = () => {
   const [errorMessage, setErrorMessge] = useState<string>('') // エラーメッセージ
 
   const [file, setFile] = useState<Blob>()
-
-  // eslint-disable-next-line
-  const [cookies, setCookie] = useCookies()
 
   // APIリクエストの状態 0:アカウント登録 1:画像転送
   const [postState, setPostState] = useState<number>(-1)
@@ -51,8 +48,7 @@ export const SignUp = () => {
       setPostState,
       dispatch,
       setCookie,
-      setErrorMessge,
-      navigation
+      setErrorMessge
     )
   }
 

@@ -2,8 +2,7 @@ import axios from 'axios'
 import { url } from '../const'
 import { Dispatch } from 'react'
 import { AnyAction } from '@reduxjs/toolkit'
-import { signIn } from '../authSlice'
-import { NavigateFunction } from 'react-router-dom'
+import { setUser, signIn } from '../authSlice'
 import { fetchUserImageEdit } from './profileUtils'
 
 type SendData = {
@@ -18,8 +17,7 @@ export const fetchSignUp = async (
   setPostState: (num: number) => void,
   dispatch: Dispatch<AnyAction>,
   setCookie: (name: string, value: any) => void,
-  setErrorMessage: (str: string) => void,
-  navigation: NavigateFunction
+  setErrorMessage: (str: string) => void
 ) => {
   // Wait画面を起動
   setPostState(0)
@@ -31,14 +29,24 @@ export const fetchSignUp = async (
       // 成功時は画像アップロードもする
       const token = res.data.token
 
+      let imagePath: string = ''
+
       setPostState(1)
-      const imageResponse = await fetchUserImageEdit(file, token)
+      const imageResponse = await fetchUserImageEdit(
+        file,
+        token,
+        (iconUrl) => {
+          imagePath = iconUrl
+        },
+        setErrorMessage
+      )
+
       if (imageResponse) {
         setPostState(2)
       }
 
       setTimeout(() => {
-        navigation('/')
+        dispatch(setUser({ name: data.name, iconUrl: imagePath }))
         dispatch(signIn())
         setCookie('token', token)
       }, 100)

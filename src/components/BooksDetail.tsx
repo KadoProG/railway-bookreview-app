@@ -24,8 +24,7 @@ export const BooksDetail: React.FC<Props> = ({
     fetchGETBookDetail(bookId, setErrorMessage, cookies.token, setBook).then(
       () => setIsLoading(false)
     )
-    // eslint-disable-next-line
-  }, [cookies.token])
+  }, [cookies.token, bookId, setErrorMessage])
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -38,6 +37,7 @@ export const BooksDetail: React.FC<Props> = ({
 
   return (
     <>
+      {/* Form以外で */}
       <Form onSubmit={handleSubmit}>
         {isLoading ? (
           <div

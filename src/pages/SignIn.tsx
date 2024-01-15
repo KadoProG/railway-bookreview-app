@@ -2,8 +2,8 @@ import axios from 'axios'
 import { FormEvent, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
-import { RootState, signIn } from '../authSlice'
+import { Link, Navigate } from 'react-router-dom'
+import { RootState, setUser, signIn } from '../authSlice'
 import { Header } from '../components/commons/Header'
 import { url } from '../const'
 import Wait from '../components/Wait'
@@ -11,12 +11,12 @@ import { InputText } from '../components/commons/InputText'
 import { Main } from '../components/commons/Main'
 import { Form } from '../components/commons/Form'
 import Footer from '../components/commons/Footer'
+import { fetchGetUserData } from '../_utils/userUtils'
 
 export const SignIn = () => {
   const auth = useSelector((state: RootState) => state.auth.isSignIn)
 
   const dispatch = useDispatch()
-  const navigation = useNavigate()
 
   // テキストボックスのステートメント
   const [email, setEmail] = useState<string>('') // メールアドレス
@@ -25,8 +25,7 @@ export const SignIn = () => {
 
   const [postState, setPostState] = useState<number>(-1)
 
-  // eslint-disable-next-line
-  const [cookies, setCookie] = useCookies()
+  const [, setCookie, removeCookie] = useCookies()
 
   // Submit時の処理
   const onSignIn = (e: FormEvent<HTMLFormElement>) => {
@@ -37,8 +36,16 @@ export const SignIn = () => {
       .then((res) => {
         setPostState(1)
         setCookie('token', res.data.token)
-        dispatch(signIn())
-        navigation('/')
+        fetchGetUserData(
+          res.data.token,
+          (data) => {
+            dispatch(setUser(data))
+            dispatch(signIn())
+          },
+          setErrorMessage,
+          dispatch,
+          removeCookie
+        )
       })
       .catch((err) => {
         setPostState(-1)

@@ -6,8 +6,7 @@ import { useCookies } from 'react-cookie'
 
 const Footer: React.FC = () => {
   // ========= ステートメント
-  // eslint-disable-next-line
-  const [cookies, setCookie, removeCookie] = useCookies() // クッキー
+  const [, , removeCookie] = useCookies() // クッキー
   const dispatch = useDispatch()
   const navigation = useNavigate()
   const auth = useSelector((state: RootState) => state.auth.isSignIn)
@@ -25,15 +24,6 @@ const Footer: React.FC = () => {
           <Link to={'/'}>
             <h3>HOME</h3>
           </Link>
-
-          {/* <ul>
-            <li>
-              <Link to={'/product?type=pick'}>大きなプロダクト</Link>
-            </li>
-            <li>
-              <Link to={'/product?type=mini'}>小さなプロダクト</Link>
-            </li>
-          </ul> */}
         </section>
         {auth ? (
           <section>

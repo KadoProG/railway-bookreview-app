@@ -1,9 +1,6 @@
-import { useEffect, useState } from 'react'
-import { useCookies } from 'react-cookie'
+import { useState } from 'react'
 import { Header } from '../components/commons/Header'
-import { fetchGetUserData } from '../_utils/userUtils'
 import { Books } from '../components/Books'
-import { useDispatch } from 'react-redux'
 import { Main } from '../components/commons/Main'
 import Footer from '../components/commons/Footer'
 
@@ -11,31 +8,14 @@ import Footer from '../components/commons/Footer'
 export const Home: React.FC = () => {
   // ========= ステートメント
   const [errorMessage, setErrorMessage] = useState<string>('') // エラーメッセージ
-  // eslint-disable-next-line
-  const [cookies, setCookie, removeCookie] = useCookies() // クッキー
-  const dispatch = useDispatch()
-  const [user, setUser] = useState<{ name: string; iconUrl: string }>() // ユーザデータ
-
-  // 起動時データを取得
-  useEffect(() => {
-    // ユーザデータを取得
-    fetchGetUserData(
-      cookies.token,
-      setUser,
-      setErrorMessage,
-      dispatch,
-      removeCookie
-    )
-    // eslint-disable-next-line
-  }, [cookies.token])
 
   return (
-    <div>
-      <Header user={user} />
+    <>
+      <Header />
       <Main title="書籍リスト" errorMessage={errorMessage}>
         <Books setErrorMessage={setErrorMessage} />
       </Main>
       <Footer />
-    </div>
+    </>
   )
 }

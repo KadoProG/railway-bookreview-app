@@ -16,7 +16,6 @@ export const BookInsert: React.FC<Props> = ({
   setErrorMessage,
   bookId,
 }: Props) => {
-  // eslint-disable-next-line
   const [cookies] = useCookies() // クッキー
   const navigation = useNavigate()
   // 書籍のステートメント
@@ -28,6 +27,10 @@ export const BookInsert: React.FC<Props> = ({
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const data = { title, url, detail, review }
+    // ロジック側は別で
+    // BookIdがあったらUpdate：Createとして呼び出す
+    // ロジックが一緒になってると編集が大変
+    // Upsertのほうがいい
     fetchBookInsert(data, setErrorMessage, cookies.token, bookId).then(
       (res) => {
         if (res) {
@@ -40,7 +43,7 @@ export const BookInsert: React.FC<Props> = ({
   const handleDelete = (e: any) => {
     e.preventDefault()
     if (!bookId) return
-    if (!confirm('本当に削除してよろしいですか？')) return //eslint-disable-line
+    if (!window.confirm('本当に削除してよろしいですか？')) return
     fetchBookDelete(bookId, cookies.token, setErrorMessage).then((res) => {
       if (res) {
         navigation('/')
