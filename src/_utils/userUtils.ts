@@ -8,16 +8,13 @@ import { signOut } from '../authSlice'
 // ユーザデータを取得
 export const fetchGetUserData = async (
   cookiesToken: string,
-  setUser: (data: any) => void,
+  setUser: (data: { name: string; iconUrl: string }) => void,
   setErrorMessage: (message: string) => void,
   dispatch: Dispatch<AnyAction>,
   removeCookie: (name: string, options?: CookieSetOptions | undefined) => void
-) => {
-  // クッキーが存在しなかったらゲストユーザにする
-  if (!cookiesToken) {
-    setUser(undefined)
-    return
-  }
+): Promise<void> => {
+  if (!cookiesToken) return
+
   try {
     const res = await axios.get(`${url}/users`, {
       headers: {
@@ -25,7 +22,7 @@ export const fetchGetUserData = async (
       },
     })
     setUser(res.data)
-    return res.data
+    return
   } catch (err: any) {
     if (err.response) {
       // 401 認証エラー

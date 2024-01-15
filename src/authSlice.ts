@@ -3,18 +3,29 @@ import { Cookies } from 'react-cookie'
 
 interface AuthState {
   isSignIn: boolean
+  name: string
+  iconUrl: string
 }
 
 const cookie = new Cookies()
 
 const initialState: AuthState = {
   isSignIn: cookie.get('token') !== undefined,
+  name: '',
+  iconUrl: '',
 }
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    setUser: (
+      state,
+      action: { type: any; payload: { name: string; iconUrl: string } }
+    ) => {
+      state.name = action.payload.name
+      state.iconUrl = action.payload.iconUrl
+    },
     signIn: (state) => {
       state.isSignIn = true
     },
@@ -24,7 +35,7 @@ export const authSlice = createSlice({
   },
 })
 
-export const { signIn, signOut } = authSlice.actions
+export const { signIn, signOut, setUser } = authSlice.actions
 
 // ペイロードの型を指定する
 interface SignInActionPayload {

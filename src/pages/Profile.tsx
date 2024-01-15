@@ -1,6 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react'
 import { Header } from '../components/commons/Header'
-import { fetchGetUserData } from '../_utils/userUtils'
 import { useDispatch, useSelector } from 'react-redux'
 import { useCookies } from 'react-cookie'
 import { Main } from '../components/commons/Main'
@@ -12,68 +11,51 @@ import {
   fetchUserProfileEdit,
 } from '../_utils/profileUtils'
 import { Navigate } from 'react-router-dom'
-import { RootState } from '../authSlice'
+import { RootState, setUser } from '../authSlice'
 import Footer from '../components/commons/Footer'
 
 export const Profile: React.FC = () => {
   // ========= ステートメント
-  const auth = useSelector((state: RootState) => state.auth.isSignIn)
-  const [errorMessage, setErrorMessage] = useState<string>('') // エラーメッセージ
-  // eslint-disable-next-line
-  const [cookies, setCookie, removeCookie] = useCookies() // クッキー
+  const auth = useSelector((state: RootState) => state.auth)
+  const [errorMessage, setErrorMessage] = useState<string>('')
+  const [cookies] = useCookies()
   const dispatch = useDispatch()
-  const [user, setUser] = useState<{ name: string; iconUrl: string }>() // ユーザデータ
 
   const [name, setName] = useState<string>('') // ユーザ名
   const [file, setFile] = useState<Blob>() // ファイルデータ
 
-  const fetchUserData = async () => {
-    const res = await fetchGetUserData(
-      cookies.token,
-      setUser,
-      setErrorMessage,
-      dispatch,
-      removeCookie
-    )
-    if (!!res && !!res.name) setName(res.name)
-  }
+  useEffect(() => {
+    setName(auth.name)
+  }, [auth.name])
 
   const onSubmitName = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setErrorMessage('')
-    const res = await fetchUserProfileEdit(name, cookies.token)
-    if (res) {
-      await fetchUserData()
-    } else {
-      setErrorMessage('名前の変更に失敗しました')
-    }
+    await fetchUserProfileEdit(name, cookies.token, setErrorMessage, (name) =>
+      dispatch(setUser({ name, iconUrl: auth.iconUrl }))
+    )
   }
 
   const onSubmitImage = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!file) return setErrorMessage('ファイルをアップロードしてください')
     setErrorMessage('')
-    const res = await fetchUserImageEdit(file, cookies.token)
-    if (res) {
-      await fetchUserData()
-    } else {
-      setErrorMessage('画像アップロードに失敗しました')
-    }
+    await fetchUserImageEdit(
+      file,
+      cookies.token,
+      (iconUrl) => {
+        dispatch(setUser({ name: auth.name, iconUrl }))
+      },
+      setErrorMessage
+    )
   }
 
-  // 起動時データを取得
-  useEffect(() => {
-    // ユーザデータを取得
-    fetchUserData()
-    // eslint-disable-next-line
-  }, [cookies.token])
-
   // ログインされていない場合はリダイレクト
-  if (!auth) return <Navigate to="/" state={{ permanent: false }} />
+  if (!auth.isSignIn) return <Navigate to="/" state={{ permanent: false }} />
 
   return (
     <>
-      <Header user={user} />
+      <Header />
       <Main title="ユーザ編集" errorMessage={errorMessage}>
         <Form onSubmit={onSubmitName} id="form" dataTestid="signin-form">
           <InputText
@@ -89,7 +71,7 @@ export const Profile: React.FC = () => {
           <p>
             現在の画像
             <img
-              src={user?.iconUrl}
+              src={auth.iconUrl}
               alt="アイコン用画像"
               width={20}
               height={20}

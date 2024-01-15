@@ -43,3 +43,20 @@
     }
   }
 }
+
+@media screen and (max-width: 1200px) {
+  .book {
+    width: calc(100% / 3 - 20px);
+  }
+}
+@media screen and (max-width: 800px) {
+  .book {
+    width: calc(50% - 20px);
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .book {
+    width: 100%;
+  }
+}
