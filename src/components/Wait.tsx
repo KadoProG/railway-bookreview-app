@@ -1,12 +1,12 @@
 // API取得等時間のかかる操作の可視化UI
-import styles from './wait.module.scss'
+import styles from './Wait.module.scss'
 
 type Props = {
   nowIndex: number // 今何番目のタスクをやっているか -1では非表示
   title: string // タイトル
   stateList: string[] // ステートリスト
 }
-const Wait = (props: Props) => {
+export const Wait = (props: Props) => {
   const nowIndex = props.nowIndex
   const [activeColor, baseColor] = ['green', 'var(--color-back-next)']
   const arrList = props.stateList
@@ -51,5 +51,3 @@ const Wait = (props: Props) => {
     </div>
   )
 }
-
-export default Wait
