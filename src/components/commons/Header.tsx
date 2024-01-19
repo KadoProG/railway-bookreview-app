@@ -45,7 +45,12 @@ export const Header: React.FC = () => {
         <h1>書籍レビューアプリ</h1>
       </Link>
       <div className={styles.header__right}>
-        <div>
+        <input
+          type="checkbox"
+          name="header__buttons__visible"
+          id="header__buttons__visible"
+        />
+        <div className={styles.header__right__buttons}>
           {isSignIn ? (
             <button
               className="disabled"
@@ -61,7 +66,12 @@ export const Header: React.FC = () => {
             {isSignIn ? 'サインアウト' : 'サインイン'}
           </button>
         </div>
-        <img src={user.iconUrl} alt="アイコン画像" />
+        <label
+          htmlFor="header__buttons__visible"
+          className={styles.header__right__image}
+        >
+          <img src={user.iconUrl} alt="アイコン画像" />
+        </label>
       </div>
     </header>
   )

@@ -11,20 +11,30 @@
   z-index: 10;
   &__title {
     color: var(--color-title);
+    & h1 {
+      font-size: 30px;
+      @media screen and (max-width: 500px) {
+        font-size: 20px;
+        line-height: 48px;
+      }
+    }
   }
   &__right {
     display: flex;
-    & > div {
+    position: relative;
+    &__buttons {
       width: 120px;
       text-align: center;
-      // display: flex;
       color: var(--color-title);
-      // overflow: hidden;
+      @media screen and (max-width: 500px) {
+        display: none;
+      }
       & p {
         height: 24px;
       }
       & button {
-        height: 24px;
+        height: 22px;
+        margin: 2px 0;
         text-align: center;
         width: 100%;
         color: var(--color-title);
@@ -37,9 +47,53 @@
         }
       }
     }
-    & img {
-      width: 48px;
-      height: 48px;
+    & input {
+      /* 透明度0 */
+      filter: alpha(opacity=0);
+      -moz-opacity: 0;
+      opacity: 0;
+      /* ブラウザのデフォルトのスタイルを削除 */
+      -webkit-appearance: none;
+      appearance: none;
+      /* レイアウトから無視 */
+      position: fixed;
+      display: none;
+      @media screen and (max-width: 500px) {
+        display: block;
+      }
+      &:focus-visible {
+        & ~ label {
+          @media screen and (max-width: 500px) {
+            outline: -webkit-focus-ring-color auto 1px;
+          }
+        }
+      }
+      &:checked {
+        @media screen and (max-width: 500px) {
+          & + .header__right__buttons {
+            display: block;
+            position: absolute;
+            right: 0;
+            top: calc(100% + 10px);
+            background: var(--color-theme);
+            & button {
+              height: 48px;
+            }
+          }
+        }
+      }
+    }
+    &__image {
+      @media screen and (max-width: 500px) {
+        cursor: pointer;
+        &:hover {
+          background: var(--color-button-hover);
+        }
+      }
+      & img {
+        width: 48px;
+        height: 48px;
+      }
     }
   }
 }

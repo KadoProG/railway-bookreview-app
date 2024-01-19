@@ -24,6 +24,11 @@ const Footer: React.FC = () => {
           <Link to={'/'}>
             <h3>HOME</h3>
           </Link>
+          <ul>
+            <li>
+              <Link to={'/new'}>新規書籍登録</Link>
+            </li>
+          </ul>
         </section>
         {auth ? (
           <section>
